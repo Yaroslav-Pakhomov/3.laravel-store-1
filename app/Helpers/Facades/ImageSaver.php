@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Facade;
 /**
  * @method removeImage(object $model, string $DIR)
  * @method uploadImage(object $request, object $model, string $DIR)
+ * @method remove(\App\Models\Product $product, string $DIR)
  */
 class ImageSaver extends Facade {
 

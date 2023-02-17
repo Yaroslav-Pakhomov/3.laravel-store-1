@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers\Admin;
 
-// use App\Helpers\Facades\ImageSaver;
-use App\Helpers\LocalImageSaver;
+use App\Helpers\Facades\ImageSaver;
+// use ImageSaver;
+// use App\Helpers\LocalImageSaver;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Brand\BrandCatalogRequest;
 use App\Models\Brand;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use ImageSaver;
 
 class BrandController extends Controller
 {
-    private LocalImageSaver $imageSaver;
+    private ImageSaver $imageSaver;
 
-    public function __construct(LocalImageSaver $imageSaver)
+    public function __construct(ImageSaver $imageSaver)
     {
         $this->imageSaver = $imageSaver;
     }
@@ -51,7 +51,7 @@ class BrandController extends Controller
     {
         $brand = new Brand();
         $data = $request->all();
-        $data['image'] = $this->imageSaver::uploadImage($request, $brand, 'brand');
+        $data['image'] = $this->imageSaver->uploadImage($request, $brand, 'brand');
         $data['full_image'] = $brand['full_image'];
         $data['preview_image'] = $brand['preview_image'];
         unset($data['image']);
@@ -92,7 +92,7 @@ class BrandController extends Controller
     public function update(BrandCatalogRequest $request, Brand $brand): RedirectResponse
     {
         $data = $request->all();
-        $data['image'] = $this->imageSaver::uploadImage($request, $brand, 'brand');
+        $data['image'] = $this->imageSaver->uploadImage($request, $brand, 'brand');
         unset($data['image']);
         $brand->update($data);
 
@@ -111,7 +111,7 @@ class BrandController extends Controller
         if ($brand->products->count()) {
             return back()->withErrors('Нельзя удалить бренд, у которого есть товары');
         }
-        $this->imageSaver::removeImage($brand, 'brand');
+        $this->imageSaver->removeImage($brand, 'brand');
         $brand->delete();
         return redirect()->route('admin.brand.index')->with('success', 'Бренд каталога успешно удален');
     }

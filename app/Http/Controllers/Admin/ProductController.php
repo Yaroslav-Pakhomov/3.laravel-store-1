@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\Facades\ImageSaver;
 // use ImageSaver;
-use App\Helpers\LocalImageSaver;
+// use App\Helpers\LocalImageSaver;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Product\ProductCatalogRequest;
 use App\Models\Brand;
@@ -20,9 +20,9 @@ class ProductController extends Controller
      */
     public const DIR = '/product/';
 
-    private LocalImageSaver $imageSaver;
+    private ImageSaver $imageSaver;
 
-    public function __construct(LocalImageSaver $imageSaver)
+    public function __construct(ImageSaver $imageSaver)
     {
         $this->imageSaver = $imageSaver;
     }
@@ -71,7 +71,7 @@ class ProductController extends Controller
                             'sale' => $request->has('sale'),
                         ]);
         $data = $request->all();
-        $data['image'] = $this->imageSaver::uploadImage($request, NULL, 'product');
+        $data['image'] = $this->imageSaver->uploadImage($request, NULL, 'product');
         // $data['full_image'] = $brand['full_image'];
         // $data['preview_image'] = $brand['preview_image'];
         // unset($data['image']);
@@ -124,7 +124,7 @@ class ProductController extends Controller
                             'sale' => $request->has('sale'),
                         ]);
         $data = $request->all();
-        $data['image'] = $this->imageSaver::uploadImage($request, $product, self::DIR);
+        $data['image'] = $this->imageSaver->uploadImage($request, $product, self::DIR);
         unset($data['image']);
         $product->update($data);
 
