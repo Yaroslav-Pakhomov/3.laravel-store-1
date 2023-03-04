@@ -19,6 +19,9 @@ use Stem\LinguaStemRu;
  * @property mixed $id
  * @method static categoryProducts(mixed $id)
  * @method static search(mixed $search)
+ * @method static whereNew(bool $true)
+ * @method static whereHit(bool $true)
+ * @method static whereSale(bool $true)
  */
 class Product extends Model
 {

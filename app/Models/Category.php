@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use ImageSaver;
+// use ImageSaver;
 
 // use App\Http\Requests\Category\StoreCategoryRequest;
 // use App\Http\Requests\Category\UpdateCategoryRequest;
@@ -37,7 +37,7 @@ class Category extends Model
 
     protected $guarded = [];
 
-    private LocalImageSaver $imageSaver;
+    public LocalImageSaver $imageSaver;
 
     /**
      * Путь для формирования пути сохранения изображения
@@ -89,7 +89,7 @@ class Category extends Model
         $category->content = $validated['content'];
         $category->slug = $validated['slug'];
         if (!empty($validated['image'])) {
-            $category->imageSaver->uploadImage($request, $category, self::DIR);
+            $category->imageSaver::uploadImage($request, $category, self::DIR);
         }
         $category->save();
 
@@ -109,9 +109,9 @@ class Category extends Model
         $category->slug = $validated['slug'];
         // если надо удалить старое изображение
         if (!empty($validated['remove'])) {
-            $category->imageSaver->removeImage($category, self::DIR);
+            $category->imageSaver::removeImage($category, self::DIR);
         }
-        $category->imageSaver->uploadImage($request, $category, self::DIR);
+        $category->imageSaver::uploadImage($request, $category, self::DIR);
         $category->update();
 
         return $category;
